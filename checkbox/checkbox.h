@@ -12,12 +12,6 @@ public:
   std::string value;
 
   checkbox(short top, short left, std::string value);
-  void onKeyboardPress(KEY_EVENT_RECORD &);
-  void onMousePress(MOUSE_EVENT_RECORD &);
+  void toggle();
   void draw();
-
-private:
-  void putChar();
-  //void removeChar();
-  //void moveCursor();
 };

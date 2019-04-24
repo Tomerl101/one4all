@@ -57,7 +57,12 @@ int main(int argc, char const *argv[])
         switch (ir.Event.KeyEvent.wVirtualKeyCode)
         {
         case VK_SPACE:
-
+          if (cursorPos.Y == 2 && cursorPos.X == 2)
+            tb1.toggle();
+          if (cursorPos.Y == 6 && cursorPos.X == 2)
+            tb2.toggle();
+          if (cursorPos.Y == 10 && cursorPos.X == 2)
+            tb3.toggle();
           break;
         case VK_DOWN:
           if (cursorPos.Y == 10)
@@ -70,11 +75,19 @@ int main(int argc, char const *argv[])
           SetConsoleCursorPosition(output, {cursorPos.X, cursorPos.Y - 4});
           break;
         }
-        tb1.onKeyboardPress(ir.Event.KeyEvent);
+        // tb1.onKeyboardPress(ir.Event.KeyEvent);
       }
-      if (ir.EventType == MOUSE_EVENT)
+      if (ir.EventType == MOUSE_EVENT && ir.Event.MouseEvent.dwButtonState == FROM_LEFT_1ST_BUTTON_PRESSED)
       {
-        tb1.onMousePress(ir.Event.MouseEvent);
+        COORD cursorPos = ir.Event.MouseEvent.dwMousePosition;
+        if (cursorPos.Y == 2 && cursorPos.X == 2)
+          tb1.toggle();
+        if (cursorPos.Y == 6 && cursorPos.X == 2)
+          tb2.toggle();
+        if (cursorPos.Y == 10 && cursorPos.X == 2)
+          tb3.toggle();
+
+        SetConsoleCursorPosition(output, cursorPos);
       }
     }
   }
@@ -92,11 +105,3 @@ VOID ErrorExit(LPSTR lpszMessage)
 
   ExitProcess(0);
 }
-
-// COORD getCursorPosition()
-// {
-//   CONSOLE_SCREEN_BUFFER_INFO info;
-//   auto handle = GetStdHandle(STD_OUTPUT_HANDLE);
-//   GetConsoleScreenBufferInfo(handle, &info);
-//   return info.dwCursorPosition;
-// }
