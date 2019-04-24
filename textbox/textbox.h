@@ -19,6 +19,4 @@ public:
 
 private:
   void putChar();
-  //void removeChar();
-  //void moveCursor();
 };

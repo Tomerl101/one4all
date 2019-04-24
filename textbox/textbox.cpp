@@ -95,16 +95,15 @@ void TextBox::onMousePress(MOUSE_EVENT_RECORD &event)
   {
     // std::cout << "X";
     COORD cursorPos = getCursorPosition();
-
-    auto cursorPosX = cursorPos.X - (LEFT + 1);
-    cursorPos.X += 1;
-
-    if (value.length() == (WIDTH - 1))
-      return;
-    std::cout << (char)(int)cursorPos.Y;
-    value.insert(cursorPosX, 1, 'x');
-    draw();
-    SetConsoleCursorPosition(handle, cursorPos);
+    if (event.dwMousePosition.Y == 1 && (event.dwMousePosition.X > LEFT && event.dwMousePosition.X < WIDTH + LEFT))
+    {
+      if (event.dwMousePosition.X > LEFT + value.length())
+      {
+        SetConsoleCursorPosition(handle, {LEFT + value.length() + 1, event.dwMousePosition.Y});
+        return;
+      }
+      SetConsoleCursorPosition(handle, {event.dwMousePosition.X, event.dwMousePosition.Y});
+    }
 
     return;
   }
