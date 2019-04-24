@@ -1,9 +1,11 @@
 #include "checkbox.h"
 #include <iostream>
+#define SPACE 32
 
 HANDLE handle;
 DWORD fdwSaveOldMode;
 VOID ErrorExit(LPSTR);
+COORD getCursorPosition();
 
 int main(int argc, char const *argv[])
 {
@@ -13,6 +15,8 @@ int main(int argc, char const *argv[])
   DWORD count;
   // Get the standard input handle.
   handle = GetStdHandle(STD_INPUT_HANDLE);
+  HANDLE output = GetStdHandle(STD_OUTPUT_HANDLE);
+
   if (handle == INVALID_HANDLE_VALUE)
     ErrorExit("GetStdHandle");
 
@@ -25,8 +29,14 @@ int main(int argc, char const *argv[])
   SetConsoleMode(handle, fdwMode);
   // ErrorExit("SetConsoleMode");
 
-  checkbox tb(0, 4, "eat");
-  tb.draw();
+  checkbox tb1(2, 2, "eat");
+  checkbox tb2(6, 2, "work");
+  checkbox tb3(10, 2, "sdsdsd");
+  tb1.draw();
+  tb2.draw();
+  tb3.draw();
+
+  SetConsoleCursorPosition(output, {2, 2});
 
   while (1)
   {
@@ -41,14 +51,30 @@ int main(int argc, char const *argv[])
     // ReadConsoleInput(handle, &ir, 1, &count);
     if (count)
     {
-      if (ir.EventType == KEY_EVENT)
+      if (ir.EventType == KEY_EVENT && ir.Event.KeyEvent.bKeyDown)
       {
-        
-        tb.onKeyboardPress(ir.Event.KeyEvent);
+        COORD cursorPos = getCursorPosition();
+        switch (ir.Event.KeyEvent.wVirtualKeyCode)
+        {
+        case VK_SPACE:
+
+          break;
+        case VK_DOWN:
+          if (cursorPos.Y == 10)
+            break;
+          SetConsoleCursorPosition(output, {cursorPos.X, cursorPos.Y + 4});
+          break;
+        case VK_UP:
+          if (cursorPos.Y == 2)
+            break;
+          SetConsoleCursorPosition(output, {cursorPos.X, cursorPos.Y - 4});
+          break;
+        }
+        tb1.onKeyboardPress(ir.Event.KeyEvent);
       }
       if (ir.EventType == MOUSE_EVENT)
       {
-        tb.onMousePress(ir.Event.MouseEvent);
+        tb1.onMousePress(ir.Event.MouseEvent);
       }
     }
   }
@@ -66,3 +92,11 @@ VOID ErrorExit(LPSTR lpszMessage)
 
   ExitProcess(0);
 }
+
+// COORD getCursorPosition()
+// {
+//   CONSOLE_SCREEN_BUFFER_INFO info;
+//   auto handle = GetStdHandle(STD_OUTPUT_HANDLE);
+//   GetConsoleScreenBufferInfo(handle, &info);
+//   return info.dwCursorPosition;
+// }

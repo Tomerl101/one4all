@@ -8,7 +8,7 @@ bool isValidChar(int character);
 COORD getCursorPosition();
 
 checkbox::checkbox(short top, short left, std::string value)
-    :TOP(top), LEFT(left), value(value), isFilled(false),
+    : TOP(top), LEFT(left), value(value), isFilled(false),
       color(FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_INTENSITY),
       background(0) {}
 
@@ -33,8 +33,6 @@ void checkbox::onKeyboardPress(KEY_EVENT_RECORD &event)
   {
     int textWidth = value.length();
     COORD cursorPos = getCursorPosition();
-
-   
   }
   //delete char from textbox
   if (event.wVirtualKeyCode == VK_BACK)
@@ -72,7 +70,6 @@ void checkbox::onMousePress(MOUSE_EVENT_RECORD &event)
     auto cursorPosX = cursorPos.X - (LEFT + 1);
     cursorPos.X += 1;
 
-
     std::cout << (char)(int)cursorPos.Y;
     value.insert(cursorPosX, 1, 'x');
     draw();
@@ -92,25 +89,11 @@ void checkbox::draw()
 
   //draw
   if (isFilled)
-    std::cout <<  "* " + value << std::endl; 
-  else 
-    std::cout <<  "o " + value << std::endl; 
-  // SetConsoleCursorPosition(handle, {coord.X, coord.Y + 1});
-  // std::cout << (char)0xb3;
+    std::cout << "* " + value << std::endl;
+  else
+    std::cout << "o " + value << std::endl;
 
-  // for (int i = 0; i < WIDTH; i++)
-  //   std::cout << (i <= value.length() ? value[i] : ' ');
-
-  // SetConsoleCursorPosition(handle, {LEFT + WIDTH + 1, TOP + 1});
-  // std::cout << (char)0xb3;
-
-  // SetConsoleCursorPosition(handle, {LEFT, TOP + 2});
-  // std::cout << (char)0xc0;
-  // for (int i = 0; i < WIDTH; i++)
-  //   std::cout << (char)0xc4;
-  // std::cout << (char)0xd9;
-
-  // SetConsoleCursorPosition(handle, {LEFT + 1 + value.length(), TOP + 1});
+  SetConsoleCursorPosition(handle, originalCursorPos);
 }
 
 bool isValidChar(int character)
